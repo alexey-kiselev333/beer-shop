@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {Button, FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {classes} from "istanbul-lib-coverage";
 
 
 
@@ -11,7 +13,7 @@ const Pagination = ({ paginationHandler, currentPageHandler,lastPage }) => {
         paginationHandler(e);
     };
 
-    const clickBack = () => {
+    const clickPrevPage = () => {
         if (currentPage <= 1) {
             currentPageHandler(1);
         } else {
@@ -20,27 +22,37 @@ const Pagination = ({ paginationHandler, currentPageHandler,lastPage }) => {
         }
     };
 
-    const clickForward = () => {
+    const clickNextPage = () => {
         setCurrentPage(currentPage + 1);
         currentPageHandler(currentPage + 1);
     };
 
     return (
-        <div >
-            <p> Select page items q-ty</p>
-            <select onChange={changeHandler} >
-                {options.map((item) => (
-                    <option key={item}>{item}</option>
-                ))}
-            </select>
-            <div >
-                <button onClick={clickBack} disabled={currentPage===1}>
+        <div className="d-flex">
+            <div className="button-wrapper">
+                <Button onClick={clickPrevPage} disabled={currentPage===1} variant="contained" color="secondary">
                     Back
-                </button>
-                <button onClick={clickForward} disabled={lastPage} >
-                    Forward
-                </button>
+                </Button>
             </div>
+            <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel id="demo-simple-select-filled-label">q-ty</InputLabel>
+                <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    onChange={changeHandler}
+                    defaultValue={10}
+                >
+                    {options.map((item) => (
+                        <MenuItem value={item} key={item}>{item}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+                <div className="button-wrapper">
+                    <Button onClick={clickNextPage} disabled={lastPage} variant="contained" color="secondary">
+                        Next
+                    </Button>
+                </div>
+
         </div>
     );
 };

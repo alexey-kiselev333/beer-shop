@@ -1,4 +1,5 @@
 import Filter from "./Filter";
+import {Button} from "@material-ui/core";
 
 
 
@@ -9,11 +10,11 @@ export const filters = [
     {name: "ibu_lt", type: "number", description: " IBU less than"},
     {name: "ebc_lt", type: "number", description: " EBC greater than"},
     {name: "yeast", type: "string", description: "Yeast name"},
-    {name: "brewed_before", type: "date", description: "Brewed before this date"},
-    {name: "brewed_after", type: "date", description: "Brewed after this date"},
+    {name: "brewed_before", type: "date", description: "Brewed before"},
+    {name: "brewed_after", type: "date", description: "Brewed after"},
     {name: "hops", type: "string", description: "Hops name"},
     {name: "malt", type: "string", description: "Malt name"},
-    {name: "food", type: "string", description: "food"},
+    {name: "food", type: "string", description: "Food"},
     {name: "ids", type: "string", description: "ID's"},
 ];
 
@@ -29,9 +30,11 @@ const ManyFilters = function ({handleChange,sendRequest}) {
                     name={item.name}
                 />
             ))}
-            <button onClick={sendRequest} className="button-wrapper">
-                apply filters
-            </button>
+            <div className="button-wrapper">
+                <Button onClick={sendRequest} variant="contained" color="secondary">
+                    Apply filters
+                </Button>
+            </div>
         </div>
     );
 };

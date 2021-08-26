@@ -12,7 +12,7 @@ function Header(props){
         <ul className="headerRight">
             <li className="distance cu-p" onClick={props.onClickCart}>
                 <img width={18} height={18} src="/img/cart.svg" alt="Cart"/>
-                <span>1285 руб</span>
+                <span>0 руб</span>
             </li>
             <li>
                 <img width={18} height={18} src="/img/user.svg" alt="user"/>
