@@ -7,6 +7,7 @@ import axios from "axios";
 import ManyFilters from "./Components/Filters/ManyFilters";
 import useDebounce from "./hooks/useDebounce";
 import SearchBlock from "./Components/SearchBlock/SearchBlock";
+import Pagination from "./Components/Pagination/Pagination";
 
 
 function App() {
@@ -14,26 +15,30 @@ function App() {
     const [cartOpened, setCartOpened] = React.useState(false);
     const [items, setItems] = React.useState([])
     const [cartItems, setCartItems] = React.useState([])
+
+    const [paginationSize, setPaginationSize] = React.useState("10");
+    const [currentPage, setCurrentPage] = React.useState(1);
+
     const [searchValue, setSearchValue] = React.useState("")
+    const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
-    // const debouncedSearchTerm = useDebounce(searchValue, 500);
-    React.useEffect(() => {
-        axios('https://api.punkapi.com/v2/beers')
 
-            .then(res => setItems(res.data))
-    }, [])
+
+    const paginationHandler = (e) => {
+        setPaginationSize(e.target.value);
+    };
+
+    const currentPageHandler = (page) => {
+        setCurrentPage(page);
+    };
 
     console.log(items)
-
 
     const onAddToCart = (obj) => {
         setCartItems(prev => [...prev, obj])
     }
 
-    // const filterBeers = items.filter((item => item.name.toLowerCase().includes(value.toLowerCase())))
-
     const [queryParams, setQueryParams] = React.useState({});
-
 
     const handleChange = (e) => {
         const inputName = e.target.name;
@@ -56,19 +61,17 @@ function App() {
 
 
     React.useEffect(() => {
-        axios(`https://api.punkapi.com/v2/beers?page=1&per_page=10${searchValue}`).then(res => setItems(res.data))
-    }, [searchValue])
+        axios(`https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=${paginationSize}${searchValue}`).then(res => setItems(res.data))
+    }, [debouncedSearchTerm])
 
-    // React.useEffect(() => {
-    //     axios(`https://api.punkapi.com/v2/beers?page=1&per_page=10&beer_name=comet`).then(res => setItems(res.data))
-    // }, [])
+    React.useEffect(() => {
+        axios(`https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=${paginationSize}${searchValue}`).then(res => setItems(res.data))
+    }, [currentPage,paginationSize,debouncedSearchTerm])
+
 
     const sendRequest = () => {
-
-            axios(`https://api.punkapi.com/v2/beers?page=1&per_page=10${filteres}${searchValue}`).then(res => setItems(res.data))
-
+            axios(`https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=${paginationSize}${filteres}${searchValue}`).then(res => setItems(res.data))
     }
-
 
     return (
         <div className="wrapper clear">
@@ -89,9 +92,14 @@ function App() {
                         <Card title={item.name} price={item.price} image_url={item.image_url}
                               onFavorite={() => console.log('Добавили в закладки')}
                               onPlus={(obj) => onAddToCart(obj)}/>
-
                     ))}
                 </div>
+                <Pagination
+                    paginationHandler={paginationHandler}
+                    currentPageHandler={currentPageHandler}
+                    lastPage={items.length<paginationSize}
+                    currentPage={currentPage}
+                />
             </div>
         </div>
     );
