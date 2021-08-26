@@ -42,7 +42,11 @@ function App() {
 
     const handleChange = (e) => {
         const inputName = e.target.name;
-        const inputValue = e.target.value;
+        let inputValue = e.target.value;
+        if (e.target.type==="date"){
+            inputValue=e.target.value.split('-')[1]+"/"+e.target.value.split('-')[0]
+        }
+
         setQueryParams({...queryParams, [inputName]: inputValue});
     };
 
