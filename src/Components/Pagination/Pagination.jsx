@@ -3,7 +3,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select} from "@material-ui/co
 import {classes} from "istanbul-lib-coverage";
 
 
-const options = [10, 20, 30, 40, 50];
+const options = [8, 16, 32, 64, 80];
 
 const Pagination = ({paginationHandler, currentPageHandler, lastPage}) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +39,7 @@ const Pagination = ({paginationHandler, currentPageHandler, lastPage}) => {
                         labelId="demo-simple-select-filled-label"
                         id="demo-simple-select-filled"
                         onChange={changeHandler}
-                        defaultValue={10}>
+                        defaultValue={8}>
                         {options.map((item) => (
                             <MenuItem value={item} key={item}>{item}</MenuItem>
                         ))}
