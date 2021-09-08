@@ -33,6 +33,7 @@ function App() {
     };
 
     console.log(items)
+  // не забывай подчищать логи
 
     const onAddToCart = (obj) => {
         setCartItems(prev => [...prev, obj])
@@ -51,8 +52,10 @@ function App() {
     };
 
     console.log(queryParams)
+  // не забывай подчищать логи
 
     const filteres = React.useMemo(() => {
+      // можно reduce заюзать. И еще выше опечатка в названии переменной
         let url = ``
         Object.entries(queryParams).map(([key, value]) => {
             if (value) {
@@ -66,6 +69,9 @@ function App() {
 
     React.useEffect(() => {
         axios(`https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=${paginationSize}${searchValue}`).then(res => setItems(res.data))
+      // Урлу нужно вынести в .env
+      // И почему тут 2 useEffect, пазве нельзя в один было?
+      // Также ниже 3 раза повторяеться почти тот же урл, нужно сам запрос тоже вынести в отдельную функцию
     }, [debouncedSearchTerm])
 
     React.useEffect(() => {
